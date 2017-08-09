@@ -54,41 +54,48 @@ export default class {
             this.pointA.getY(),
         );
 
+        new Point(
+            this.calcPointX(this.angleA + this.angleTotal, this.largeR),
+            this.calcPointY(this.angleA + this.angleTotal, this.largeR),
+        ).print();
+
+        this.pointD.print();
+
         this.$container.append(this.$canvas);
 
         this.draw(
             this.pointA,
             this.pointB,
-            this.pointC,
-            this.pointD,
             this.angleA,
         );
+
+        this.draw(
+            this.pointA,
+            this.pointB,
+            this.angleA,
+            0.95
+        );
     }
-    drawBorder() {
-        const pointAB = this.pointA.calcMiddlePoint(this.pointB);
-        const pointCD = this.pointC.calcMiddlePoint(this.pointD);
-        const pointEF = this.pointE.calcMiddlePoint(this.pointF);
+    draw(pointA, pointB, angle, percentage = 1) {
+        const angleTotal = 5 - 2 * angle;
+        const angleCalc = percentage * angleTotal;
 
-        const radius = (this.largeR - this.smallR) / 2;
-        const start = this.angleA - 1;
-        const end = 2 - this.angleA;
+        const pointC = new Point(
+            this.calcPointX(angle + angleTotal * percentage, this.smallR),
+            this.calcPointY(angle + angleTotal * percentage, this.smallR),
+        );
 
-        this.drawArc(pointAB, radius, start - 1, start);
-        this.drawArc(pointCD, radius, 1 - start, -start);
-        this.drawArc(pointEF, radius, 1 - this.angleCalc, 2 - this.angleCalc);
+        const pointD = new Point(
+            this.calcPointX(angle + angleTotal * percentage, this.largeR),
+            this.calcPointY(angle + angleTotal * percentage, this.largeR),
+        );
 
-        // this.drawArc(this.pointO, this.largeR, start, end);
-        // this.drawArc(this.pointO, this.smallR, start, end);
-    }
-    draw(pointA, pointB, pointC, pointD, angle, percentage = 1) {
         const pointAB = pointA.calcMiddlePoint(pointB);
         const pointCD = pointC.calcMiddlePoint(pointD);
 
         const radius = (this.largeR - this.smallR) / 2;
-        const start = angle - 1;
 
-        const angleCalc = percentage * (5 - 2 * angle);
-        const startBreaks = [angle - 1, angle - 1, 0, 2 - angle];
+        const startBreaks = [angle - 1, angle - 1, angleCalc + angle - 2, angleCalc + angle - 1];
 
         this.ctx.beginPath();
         
@@ -108,8 +115,8 @@ export default class {
         this.drawArc(
             pointCD,
             radius,
-            angleCalc + angle - 2,
-            angleCalc + angle - 3,
+            startBreaks[2],
+            startBreaks[2] - 1,
             true
         );
         this.drawArc(
