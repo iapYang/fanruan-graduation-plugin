@@ -49,6 +49,8 @@ export default class {
 
         this.drawText(this.pointB.getX(), this.pointB.getY() - 10);
         this.drawText(2 * this.pointO.getX() - this.pointB.getX(), this.pointB.getY() - 10, '2700');
+
+        this.$container.append(this.createTitle());
     }
     fillArc(pointA, pointB, angle, percentage = 1, color = '#d6d6d6') {
         const angleTotal = 5 - 2 * angle;
@@ -137,5 +139,13 @@ export default class {
         this.ctx.lineWidth = 2;
         this.ctx.strokeText(str, x, y);
         this.ctx.restore();
+    }
+    createTitle() {
+        return $(`
+            <div class="canvas-titles">
+                <span>dollars</span>
+                <span>1000</span>
+            </div>
+        `);
     }
 }
