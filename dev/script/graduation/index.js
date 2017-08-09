@@ -163,8 +163,8 @@ export default class {
     createTitle() {
         return $(`
             <div class="canvas-titles">
-                <span>dollars</span>
-                <span style="color: ${this.color}">${this.unit}</span>
+                <span>${this.unit}</span>
+                <span style="color: ${this.color}">${this.value}</span>
             </div>
         `);
     }

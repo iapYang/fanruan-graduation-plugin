@@ -13,19 +13,19 @@ new Graduation($container1, {
     color: '#0000FF',
     range: [500, 2700],
     value: 1000,
-    unit: 500,
+    unit: 'dollars',
 });
 
 new Graduation($container2, {
     color: '#9ACC00',
     range: [0, 2700],
     value: 2000,
-    unit: 1000,
+    unit: 'ms',
 });
 
 new Graduation($container3, {
     color: '#FFC900',
     range: [0, 3500],
     value: 1000,
-    unit: 400,
+    unit: 'tons',
 });
