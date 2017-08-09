@@ -10,28 +10,17 @@ export default class {
         `);
         this.canvas = this.$canvas[0];
         this.ctx = this.canvas.getContext('2d');
+        this.ctx.lineWidth = 0;
+        this.ctx.strokeStyle = 'transparent';
 
         this.angleA = 5 / 3;
-        this.angleTotal = 5 - 2 * this.angleA;
         this.largeR = 150;
         this.smallR = 130;
         this.percentage = 0.6;
 
-        this.angleCalc = this.angleTotal * this.percentage;
-
         this.pointO = new Point(
             this.canvas.width / 2,
             this.canvas.height / 2
-        );
-
-        this.pointE = new Point(
-            this.calcPointX(this.angleCalc, this.largeR),
-            this.calcPointY(this.angleCalc, this.largeR),
-        );
-
-        this.pointF = new Point(
-            this.calcPointX(this.angleCalc, this.smallR),
-            this.calcPointY(this.angleCalc, this.smallR),
         );
 
         this.pointA = new Point(
@@ -44,39 +33,23 @@ export default class {
             this.calcPointY(this.angleA, this.smallR)
         );
 
-        this.pointC = new Point(
-            2 * this.pointO.getX() - this.pointB.getX(),
-            this.pointB.getY(),
-        );
-
-        this.pointD = new Point(
-            2 * this.pointO.getX() - this.pointA.getX(),
-            this.pointA.getY(),
-        );
-
-        new Point(
-            this.calcPointX(this.angleA + this.angleTotal, this.largeR),
-            this.calcPointY(this.angleA + this.angleTotal, this.largeR),
-        ).print();
-
-        this.pointD.print();
-
         this.$container.append(this.$canvas);
 
         this.draw(
             this.pointA,
             this.pointB,
-            this.angleA,
+            this.angleA
         );
 
         this.draw(
             this.pointA,
             this.pointB,
             this.angleA,
-            0.95
+            this.percentage,
+            '#0000FF'
         );
     }
-    draw(pointA, pointB, angle, percentage = 1) {
+    draw(pointA, pointB, angle, percentage = 1, color = '#d6d6d6') {
         const angleTotal = 5 - 2 * angle;
         const angleCalc = percentage * angleTotal;
 
@@ -97,6 +70,7 @@ export default class {
 
         const startBreaks = [angle - 1, angle - 1, angleCalc + angle - 2, angleCalc + angle - 1];
 
+        this.ctx.save();
         this.ctx.beginPath();
         
         this.drawArc(
@@ -126,6 +100,11 @@ export default class {
             startBreaks[3] - angleCalc,
             true
         );
+        this.ctx.fillStyle = color;
+        this.ctx.fill();
+
+        this.ctx.closePath();
+        this.ctx.restore();
     }
     drawArc(point, radius, start, end, counterclockwise = false) {
         const startAngle = start * Math.PI;
