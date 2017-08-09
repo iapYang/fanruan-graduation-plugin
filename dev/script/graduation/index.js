@@ -1,6 +1,7 @@
 import $ from 'jquery';
 
 import Point from './point';
+import '../../style/graduation.scss';
 
 export default class {
     constructor($container, {
