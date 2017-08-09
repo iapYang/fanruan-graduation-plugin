@@ -3,18 +3,30 @@ import $ from 'jquery';
 import Point from './point';
 
 export default class {
-    constructor($container) {
+    constructor($container, {
+        color,
+        range,
+        value,
+        unit,
+    }) {
         this.$container = $container;
+        this.color = color || 'black';
+        this.range = range;
+        this.value = value;
+        this.unit = unit;
+
         this.$canvas = $(`
-            <canvas class="canvas" width="400" height="400" dir="rtl"></canvas>
+            <canvas class="canvas" width="400" height="400"></canvas>
         `);
         this.canvas = this.$canvas[0];
         this.ctx = this.canvas.getContext('2d');
 
+        console.log(this.canvas.dir);
+
         this.angleA = 5 / 3;
         this.largeR = 150;
         this.smallR = 130;
-        this.percentage = 0.6;
+        this.percentage = this.value / (this.range[1] - this.range[0]);
 
         this.pointO = new Point(
             this.canvas.width / 2,
@@ -44,11 +56,19 @@ export default class {
             this.pointB,
             this.angleA,
             this.percentage,
-            '#0000FF'
+            this.color
         );
 
-        this.drawText(this.pointB.getX(), this.pointB.getY() - 10);
-        this.drawText(2 * this.pointO.getX() - this.pointB.getX(), this.pointB.getY() - 10, '2700');
+        this.drawText(
+            this.pointB.getX(),
+            this.pointB.getY() - 10,
+            this.range[0]
+        );
+        this.canvas.dir = 'rtl';
+        this.drawText(
+            2 * this.pointO.getX() - this.pointB.getX(), this.pointB.getY() - 10,
+            this.range[1]
+        );
 
         this.$container.append(this.createTitle());
     }
@@ -144,7 +164,7 @@ export default class {
         return $(`
             <div class="canvas-titles">
                 <span>dollars</span>
-                <span>1000</span>
+                <span style="color: ${this.color}">${this.unit}</span>
             </div>
         `);
     }
