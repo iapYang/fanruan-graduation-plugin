@@ -6,12 +6,10 @@ export default class {
     constructor($container) {
         this.$container = $container;
         this.$canvas = $(`
-            <canvas class="canvas" width="400" height="400"></canvas>
+            <canvas class="canvas" width="400" height="400" dir="rtl"></canvas>
         `);
         this.canvas = this.$canvas[0];
         this.ctx = this.canvas.getContext('2d');
-        this.ctx.lineWidth = 0;
-        this.ctx.strokeStyle = 'transparent';
 
         this.angleA = 5 / 3;
         this.largeR = 150;
@@ -35,21 +33,24 @@ export default class {
 
         this.$container.append(this.$canvas);
 
-        this.draw(
+        this.fillArc(
             this.pointA,
             this.pointB,
             this.angleA
         );
 
-        this.draw(
+        this.fillArc(
             this.pointA,
             this.pointB,
             this.angleA,
             this.percentage,
             '#0000FF'
         );
+
+        this.drawText(this.pointB.getX(), this.pointB.getY() - 10);
+        this.drawText(2 * this.pointO.getX() - this.pointB.getX(), this.pointB.getY() - 10, '2700');
     }
-    draw(pointA, pointB, angle, percentage = 1, color = '#d6d6d6') {
+    fillArc(pointA, pointB, angle, percentage = 1, color = '#d6d6d6') {
         const angleTotal = 5 - 2 * angle;
         const angleCalc = percentage * angleTotal;
 
@@ -71,6 +72,8 @@ export default class {
         const startBreaks = [angle - 1, angle - 1, angleCalc + angle - 2, angleCalc + angle - 1];
 
         this.ctx.save();
+        this.ctx.lineWidth = 0;
+        this.ctx.strokeStyle = 'transparent';
         this.ctx.beginPath();
         
         this.drawArc(
@@ -126,5 +129,13 @@ export default class {
     }
     calcPointY(angle, radius) {
         return this.pointO.getY() - radius * Math.sin(angle * Math.PI);
+    }
+    drawText(x, y, str = '0') {
+        this.ctx.save();
+        this.ctx.font = '10px Arial';
+        this.strokeStyle = 'black';
+        this.ctx.lineWidth = 2;
+        this.ctx.strokeText(str, x, y);
+        this.ctx.restore();
     }
 }
