@@ -61,7 +61,7 @@ export default class {
             this.pointB,
             this.pointC,
             this.pointD,
-            this.angleA
+            this.angleA,
         );
     }
     drawBorder() {
@@ -87,12 +87,38 @@ export default class {
         const radius = (this.largeR - this.smallR) / 2;
         const start = angle - 1;
 
+        const angleCalc = percentage * (5 - 2 * angle);
+        const startBreaks = [angle - 1, angle - 1, 0, 2 - angle];
+
         this.ctx.beginPath();
         
-        this.drawArc(pointAB, radius, start, start - 1, true);
-        this.drawArc(this.pointO, this.smallR, start, 1 - start);
-        this.drawArc(pointCD, radius, 1 - angle, 2 - angle, true);
-        this.drawArc(this.pointO, this.largeR, 2 - angle, angle - 1, true);
+        this.drawArc(
+            pointAB,
+            radius,
+            startBreaks[0],
+            startBreaks[0] - 1,
+            true
+        );
+        this.drawArc(
+            this.pointO,
+            this.smallR,
+            startBreaks[1],
+            startBreaks[1] + angleCalc
+        );
+        this.drawArc(
+            pointCD,
+            radius,
+            angleCalc + angle - 2,
+            angleCalc + angle - 3,
+            true
+        );
+        this.drawArc(
+            this.pointO,
+            this.largeR,
+            startBreaks[3],
+            startBreaks[3] - angleCalc,
+            true
+        );
     }
     drawArc(point, radius, start, end, counterclockwise = false) {
         const startAngle = start * Math.PI;
