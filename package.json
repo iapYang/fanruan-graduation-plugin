@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "cli": "iapvt cli -r -s",
-    "start": "iapvt"
+    "start": "iapvt",
+    "build": "iapvt build",
+    "gh": "iapvt gh"
   },
   "repository": {
     "type": "git",
